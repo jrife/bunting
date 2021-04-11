@@ -1,0 +1,196 @@
+syntax = "proto3";
+package buntingkvpb;
+
+import "gogoproto/gogo.proto";
+import "buntingkv.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+
+service BuntingKV {
+    rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse);
+    rpc UpdateCollection(UpdateCollectionRequest) returns (UpdateCollectionResponse);
+    rpc DeleteCollection(DeleteCollectionRequest) returns (DeleteCollectionResponse);
+    rpc GetCollection(GetCollectionRequest) returns (GetCollectionResponse);
+    rpc ListCollections(ListCollectionsRequest) returns (ListCollectionsResponse);
+
+    rpc CreateCollectionObserver(CreateCollectionObserverRequest) returns (CreateCollectionObserverResponse);
+    rpc UpdateCollectionObserver(UpdateCollectionObserverRequest) returns (UpdateCollectionObserverResponse);
+    rpc DeleteCollectionObserver(DeleteCollectionObserverRequest) returns (DeleteCollectionObserverResponse);
+    rpc GetCollectionObserver(GetCollectionObserverRequest) returns (GetCollectionObserverResponse);
+    rpc ListCollectionObservers(ListCollectionObserversRequest) returns (ListCollectionObserversResponse);
+
+    rpc KVTxn(KVTxnRequest) returns (KVTxnResponse);
+    rpc KVQuery(KVQueryRequest) returns (KVQueryResponse);
+}
+
+message CreateCollectionRequest {
+}
+
+message CreateCollectionResponse {
+}
+
+message UpdateCollectionRequest {
+}
+
+message UpdateCollectionResponse {
+}
+
+message DeleteCollectionRequest {
+}
+
+message DeleteCollectionResponse {
+}
+
+message GetCollectionRequest {
+}
+
+message GetCollectionResponse {
+}
+
+message ListCollectionsRequest {
+}
+
+message ListCollectionsResponse {
+}
+
+message CreateCollectionObserverRequest {
+}
+
+message CreateCollectionObserverResponse {
+}
+
+message UpdateCollectionObserverRequest {
+}
+
+message UpdateCollectionObserverResponse {
+}
+
+message DeleteCollectionObserverRequest {
+}
+
+message DeleteCollectionObserverResponse {
+}
+
+message GetCollectionObserverRequest {
+}
+
+message GetCollectionObserverResponse {
+}
+
+message ListCollectionObserversRequest {
+}
+
+message ListCollectionObserversResponse {
+}
+
+message KVRequestOp {
+    oneof request {
+        KVCreateRequest create = 1;
+        KVUpdateRequest update = 2;
+        KVPatchRequest patch = 3;
+        KVBatchRequest batch = 4;
+        KVDeleteRequest delete = 5;
+        KVQueryRequest query = 6;
+    }
+}
+
+message KVResponseOp {
+    oneof response {
+        KVCreateResponse create = 1;
+        KVUpdateResponse update = 2;
+        KVPatchResponse patch = 3;
+        KVBatchResponse batch = 4;
+        KVDeleteResponse delete = 5;
+        KVQueryResponse query = 6;
+    }
+}
+
+message KVTxnRequest {
+    repeated KVRequestOp requests = 1;
+}
+
+message KVTxnResponse {
+    repeated KVResponseOp responses = 1;
+}
+
+message KVCreateRequest {
+    Key key = 1;
+    bytes value = 2;
+}
+
+message KVCreateResponse {
+}
+
+message KVUpdateRequest {
+    Key key = 1;
+    bytes value = 2;
+}
+
+message KVUpdateResponse {
+}
+
+message KVPatchRequest {
+    Key key = 1;
+    bytes patch = 2;
+}
+
+message KVPatchResponse {
+}
+
+message KVBatchRequest {
+    bytes collection = 1;
+    bytes partition = 2;
+    bytes request = 3;
+}
+
+message KVBatchResponse {
+    int64 count = 1;
+}
+
+message KVDeleteRequest {
+    Key key = 1;
+}
+
+message KVDeleteResponse {
+}
+
+message KVQueryRequest {
+    enum SortOrder {
+        NONE = 0;  // default, no sorting
+        ASC = 1; // lowest target value first
+        DESC = 2; // highest target value first
+    }
+
+    bytes collection = 1;
+
+    bytes partition = 2;
+
+    // Use after to get the next page of results by inserting the after cursor from the
+    // previous page.
+    string after = 3;
+    // limit is the limit on the number of keys returned in the result.
+    // If limit is set to 0 the default limit is used.
+    int64 limit = 4;
+    // sort_order is the order for returned sorted results.
+    SortOrder sort_order = 5;
+    // exclude_values when set excludes values from the resulting kvs
+    bool exclude_values = 6;
+    // include_count when set includes the total count of keys matching
+    // the query constraints in the result
+    bool include_count = 7;
+}
+
+message KVQueryResponse {
+    // kvs is the list of key-value pairs matched by the query.
+    repeated KeyValue kvs = 1 [(gogoproto.nullable) = false];
+    // more indicates if there are more keys matching the query.
+    bool more = 2;
+    // after is a cursor that can be used in to get the next page
+    // of results after this one.
+    string after = 3;
+    // count is set to the total number of keys matching the query.
+    int64 count = 4;
+}

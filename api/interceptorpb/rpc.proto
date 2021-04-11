@@ -1,0 +1,56 @@
+syntax = "proto3";
+package interceptorpb;
+
+import "gogoproto/gogo.proto";
+import "bunting.io/bunting/api/buntingkvpb/buntingkv.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+
+service CollectionInterceptor {
+    rpc Create(CreateRequest) returns (CreateResponse);
+    rpc Update(UpdateRequest) returns (UpdateResponse);
+    rpc Patch(PatchRequest) returns (PatchResponse);
+    rpc Batch(BatchRequest) returns (stream BatchResponse);
+}
+
+message CreateRequest {
+    buntingkvpb.KeyValue kv = 1;
+}
+
+message CreateResponse {
+    buntingkvpb.KeyValue kv = 1;
+    buntingkvpb.Key owner = 2;
+}
+
+message UpdateRequest {
+    buntingkvpb.KeyValue kv = 1;
+}
+
+message UpdateResponse {
+    buntingkvpb.KeyValue kv = 1;
+    buntingkvpb.Key owner = 2;
+}
+
+message PatchRequest {
+    buntingkvpb.KeyValue kv = 1;
+    bytes patch = 2;
+}
+
+message PatchResponse {
+    buntingkvpb.KeyValue kv = 1;
+    buntingkvpb.Key owner = 2;
+}
+
+message BatchRequest {
+    bytes collection = 1;
+    bytes partition = 2;
+    bytes request = 3;
+}
+
+message BatchResponse {
+    buntingkvpb.KeyValue kv = 1;
+    buntingkvpb.Key owner = 2;
+}

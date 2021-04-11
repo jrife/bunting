@@ -1,0 +1,27 @@
+
+syntax = "proto3";
+package buntingkvpb;
+
+import "gogoproto/gogo.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+
+message Key {
+    bytes collection = 1;
+    bytes partition = 2;
+    bytes key = 3;
+}
+
+message KeyValue {
+    // key is the key in bytes. An empty key is not allowed.
+    Key key = 1;
+    // value is the value held by the key, in bytes.
+    bytes value = 2;
+    // index is the index in this kv's table topic partition that
+    // produced this version. It can be used by observers to
+    // ensure increasing versions of individual keys.
+    int64 index = 3;
+}

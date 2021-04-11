@@ -1,0 +1,47 @@
+syntax = "proto3";
+package observerpb;
+
+import "gogoproto/gogo.proto";
+import "bunting.io/bunting/api/buntingkvpb/buntingkv.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+
+service CollectionObserver {
+    rpc Create(CreateRequest) returns (CreateResponse);
+    rpc Update(UpdateRequest) returns (UpdateResponse);
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message CreateRequest {
+    // last index to be applied to this shard. It can be
+    // used to ensure strict ordering of updates applied
+    // to a shard. The index embedded in the kv can be
+    // used to ensure strict ordering on a single key.
+    // Sometimes we'd like to ensure sequential
+    // consistency on a whole partition, however.
+    // guard: allow update iff my_current_index = last_index.
+    int64 last_index = 1;
+    buntingkvpb.KeyValue kv = 2;
+}
+
+message CreateResponse {
+}
+
+message UpdateRequest {
+    int64 last_index = 1;
+    buntingkvpb.KeyValue kv = 2;
+}
+
+message UpdateResponse {
+}
+
+message DeleteRequest {
+    int64 last_index = 1;
+    buntingkvpb.KeyValue kv = 2;
+}
+
+message DeleteResponse {
+}
