@@ -22,6 +22,12 @@ service BuntingKV {
     rpc GetCollectionObserver(GetCollectionObserverRequest) returns (GetCollectionObserverResponse);
     rpc ListCollectionObservers(ListCollectionObserversRequest) returns (ListCollectionObserversResponse);
 
+    rpc CreateHost(CreateHostRequest) returns (CreateHostResponse);
+    rpc UpdateHost(UpdateHostRequest) returns (UpdateHostResponse);
+    rpc DeleteHost(DeleteHostRequest) returns (DeleteHostResponse);
+    rpc GetHost(GetHostRequest) returns (GetHostResponse);
+    rpc ListHosts(ListHostsRequest) returns (ListHostsResponse);
+
     rpc KVTxn(KVTxnRequest) returns (KVTxnResponse);
     rpc KVQuery(KVQueryRequest) returns (KVQueryResponse);
 }
@@ -85,6 +91,37 @@ message ListCollectionObserversRequest {
 
 message ListCollectionObserversResponse {
 }
+
+
+message CreateHostRequest {
+}
+
+message CreateHostResponse {
+}
+
+message UpdateHostRequest {
+}
+
+message UpdateHostResponse {
+}
+
+message DeleteHostRequest {
+}
+
+message DeleteHostResponse {
+}
+
+message GetHostRequest {
+}
+
+message GetHostResponse {
+}
+
+message ListHostsRequest {
+}
+
+message ListHostsResponse {
+} 
 
 message KVRequestOp {
     oneof request {

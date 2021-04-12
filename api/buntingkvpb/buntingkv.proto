@@ -9,6 +9,13 @@ option (gogoproto.sizer_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 option (gogoproto.goproto_getters_all) = false;
 
+message Collection {
+    string name = 1;
+}
+
+message CollectionObserver {
+}
+
 message Key {
     bytes collection = 1;
     bytes partition = 2;

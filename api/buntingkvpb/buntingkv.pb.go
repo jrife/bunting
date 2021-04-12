@@ -23,6 +23,79 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type Collection struct {
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (m *Collection) Reset()         { *m = Collection{} }
+func (m *Collection) String() string { return proto.CompactTextString(m) }
+func (*Collection) ProtoMessage()    {}
+func (*Collection) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be07fcc75d868f0f, []int{0}
+}
+func (m *Collection) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Collection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Collection.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Collection) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Collection.Merge(m, src)
+}
+func (m *Collection) XXX_Size() int {
+	return m.Size()
+}
+func (m *Collection) XXX_DiscardUnknown() {
+	xxx_messageInfo_Collection.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Collection proto.InternalMessageInfo
+
+type CollectionObserver struct {
+}
+
+func (m *CollectionObserver) Reset()         { *m = CollectionObserver{} }
+func (m *CollectionObserver) String() string { return proto.CompactTextString(m) }
+func (*CollectionObserver) ProtoMessage()    {}
+func (*CollectionObserver) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be07fcc75d868f0f, []int{1}
+}
+func (m *CollectionObserver) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CollectionObserver) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CollectionObserver.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CollectionObserver) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CollectionObserver.Merge(m, src)
+}
+func (m *CollectionObserver) XXX_Size() int {
+	return m.Size()
+}
+func (m *CollectionObserver) XXX_DiscardUnknown() {
+	xxx_messageInfo_CollectionObserver.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CollectionObserver proto.InternalMessageInfo
+
 type Key struct {
 	Collection []byte `protobuf:"bytes,1,opt,name=collection,proto3" json:"collection,omitempty"`
 	Partition  []byte `protobuf:"bytes,2,opt,name=partition,proto3" json:"partition,omitempty"`
@@ -33,7 +106,7 @@ func (m *Key) Reset()         { *m = Key{} }
 func (m *Key) String() string { return proto.CompactTextString(m) }
 func (*Key) ProtoMessage()    {}
 func (*Key) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be07fcc75d868f0f, []int{0}
+	return fileDescriptor_be07fcc75d868f0f, []int{2}
 }
 func (m *Key) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -77,7 +150,7 @@ func (m *KeyValue) Reset()         { *m = KeyValue{} }
 func (m *KeyValue) String() string { return proto.CompactTextString(m) }
 func (*KeyValue) ProtoMessage()    {}
 func (*KeyValue) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be07fcc75d868f0f, []int{1}
+	return fileDescriptor_be07fcc75d868f0f, []int{3}
 }
 func (m *KeyValue) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -107,6 +180,8 @@ func (m *KeyValue) XXX_DiscardUnknown() {
 var xxx_messageInfo_KeyValue proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterType((*Collection)(nil), "buntingkvpb.Collection")
+	proto.RegisterType((*CollectionObserver)(nil), "buntingkvpb.CollectionObserver")
 	proto.RegisterType((*Key)(nil), "buntingkvpb.Key")
 	proto.RegisterType((*KeyValue)(nil), "buntingkvpb.KeyValue")
 }
@@ -114,21 +189,76 @@ func init() {
 func init() { proto.RegisterFile("buntingkv.proto", fileDescriptor_be07fcc75d868f0f) }
 
 var fileDescriptor_be07fcc75d868f0f = []byte{
-	// 209 bytes of a gzipped FileDescriptorProto
+	// 244 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4f, 0x2a, 0xcd, 0x2b,
 	0xc9, 0xcc, 0x4b, 0xcf, 0x2e, 0xd3, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x86, 0x0b, 0x14,
-	0x24, 0x49, 0x89, 0xa4, 0xe7, 0xa7, 0xe7, 0x83, 0xc5, 0xf5, 0x41, 0x2c, 0x88, 0x12, 0xa5, 0x50,
-	0x2e, 0x66, 0xef, 0xd4, 0x4a, 0x21, 0x39, 0x2e, 0xae, 0xe4, 0xfc, 0x9c, 0x9c, 0xd4, 0xe4, 0x92,
-	0xcc, 0xfc, 0x3c, 0x09, 0x46, 0x05, 0x46, 0x0d, 0x9e, 0x20, 0x24, 0x11, 0x21, 0x19, 0x2e, 0xce,
-	0x82, 0xc4, 0xa2, 0x92, 0x4c, 0xb0, 0x34, 0x13, 0x58, 0x1a, 0x21, 0x20, 0x24, 0xc0, 0xc5, 0x9c,
-	0x9d, 0x5a, 0x29, 0xc1, 0x0c, 0x16, 0x07, 0x31, 0x95, 0xa2, 0xb8, 0x38, 0xbc, 0x53, 0x2b, 0xc3,
-	0x12, 0x73, 0x4a, 0x53, 0x85, 0x94, 0x20, 0xb2, 0x20, 0x43, 0xb9, 0x8d, 0x04, 0xf4, 0x90, 0xdc,
-	0xa4, 0xe7, 0x9d, 0x5a, 0x09, 0x56, 0x2f, 0x24, 0xc2, 0xc5, 0x5a, 0x06, 0x52, 0x0c, 0x35, 0x1b,
-	0xc2, 0x01, 0x89, 0x66, 0xe6, 0xa5, 0xa4, 0x56, 0x80, 0x4d, 0x66, 0x0e, 0x82, 0x70, 0x9c, 0x64,
-	0x4e, 0x3c, 0x94, 0x63, 0x38, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4,
-	0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x24, 0x36,
-	0xb0, 0xbf, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x84, 0xfe, 0x63, 0xd8, 0x0d, 0x01, 0x00,
-	0x00,
+	0x24, 0x49, 0x89, 0xa4, 0xe7, 0xa7, 0xe7, 0x83, 0xc5, 0xf5, 0x41, 0x2c, 0x88, 0x12, 0x25, 0x05,
+	0x2e, 0x2e, 0xe7, 0xfc, 0x9c, 0x9c, 0xd4, 0xe4, 0x92, 0xcc, 0xfc, 0x3c, 0x21, 0x21, 0x2e, 0x96,
+	0xbc, 0xc4, 0xdc, 0x54, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xce, 0x20, 0x30, 0x5b, 0x49, 0x84, 0x4b,
+	0x08, 0xa1, 0xc2, 0x3f, 0xa9, 0x38, 0xb5, 0xa8, 0x2c, 0xb5, 0x48, 0x29, 0x94, 0x8b, 0xd9, 0x3b,
+	0xb5, 0x52, 0x48, 0x8e, 0x8b, 0x2b, 0x19, 0x2e, 0x09, 0xd6, 0xc6, 0x13, 0x84, 0x24, 0x22, 0x24,
+	0xc3, 0xc5, 0x59, 0x90, 0x58, 0x54, 0x92, 0x09, 0x96, 0x66, 0x02, 0x4b, 0x23, 0x04, 0x84, 0x04,
+	0xb8, 0x98, 0xb3, 0x53, 0x2b, 0x25, 0x98, 0xc1, 0xe2, 0x20, 0xa6, 0x52, 0x14, 0x17, 0x87, 0x77,
+	0x6a, 0x65, 0x58, 0x62, 0x4e, 0x69, 0xaa, 0x90, 0x12, 0x44, 0x16, 0x64, 0x28, 0xb7, 0x91, 0x80,
+	0x1e, 0x92, 0x5f, 0xf4, 0xbc, 0x53, 0x2b, 0xc1, 0xea, 0x85, 0x44, 0xb8, 0x58, 0xcb, 0x40, 0x8a,
+	0xa1, 0x66, 0x43, 0x38, 0x20, 0xd1, 0xcc, 0xbc, 0x94, 0xd4, 0x0a, 0xb0, 0xc9, 0xcc, 0x41, 0x10,
+	0x8e, 0x93, 0xcc, 0x89, 0x87, 0x72, 0x0c, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8,
+	0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7,
+	0x90, 0xc4, 0x06, 0x0e, 0x0f, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xed, 0x4c, 0x0b, 0xd1,
+	0x45, 0x01, 0x00, 0x00,
+}
+
+func (m *Collection) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Collection) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Collection) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintBuntingkv(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CollectionObserver) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CollectionObserver) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CollectionObserver) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
 }
 
 func (m *Key) Marshal() (dAtA []byte, err error) {
@@ -233,6 +363,28 @@ func encodeVarintBuntingkv(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *Collection) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovBuntingkv(uint64(l))
+	}
+	return n
+}
+
+func (m *CollectionObserver) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
 func (m *Key) Size() (n int) {
 	if m == nil {
 		return 0
@@ -279,6 +431,144 @@ func sovBuntingkv(x uint64) (n int) {
 }
 func sozBuntingkv(x uint64) (n int) {
 	return sovBuntingkv(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *Collection) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBuntingkv
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Collection: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Collection: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBuntingkv
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBuntingkv
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBuntingkv
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBuntingkv(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBuntingkv
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthBuntingkv
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CollectionObserver) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBuntingkv
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CollectionObserver: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CollectionObserver: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBuntingkv(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthBuntingkv
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthBuntingkv
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *Key) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
