@@ -29,6 +29,11 @@ service BuntingKV {
     rpc ListHosts(ListHostsRequest) returns (ListHostsResponse);
 
     rpc KVTxn(KVTxnRequest) returns (KVTxnResponse);
+    rpc KVWatch(KVWatchRequest) returns (stream KVWatchResponse);
+    rpc KVQuery(KVQueryRequest) returns (KVQueryResponse);
+}
+
+service ShardHost {
     rpc KVQuery(KVQueryRequest) returns (KVQueryResponse);
 }
 
@@ -194,6 +199,85 @@ message KVDeleteRequest {
 message KVDeleteResponse {
 }
 
+message KVPredicate {
+    // [FIELD] [COMPARISON] [VALUE]
+    enum Operator {
+      // =
+      EQUAL = 0;
+      // !=
+      NOT_EQUAL = 1;
+      // >
+      GT = 2;
+      // >=
+      GTE = 3;
+      // <
+      LT = 4;
+      // <=
+      LTE = 5;
+      STARTS_WITH = 6;
+    }
+  
+    // operator is the logical comparison operation for this comparison.
+    Operator operator = 1;
+    // value is the basis for comparison.
+    bytes value = 2;
+}
+
+message KVWatchRequest {
+    // start is an optional offset to watch from (exclusive). No start is "now".
+    int64 start = 1;
+    // Only keys matching the predicates in the selection will be included in the result
+    repeated KVPredicate selection = 2 [(gogoproto.nullable) = false];
+    // progress_notify is set so that the buntingkv server will periodically send a KVWatchResponse with
+    // no events to the new watcher if there are no recent events. It is useful when clients
+    // wish to recover a disconnected watcher starting from a recent known revision.
+    // The ptarmigan server may decide how often it will send notifications based on current load.
+    bool progress_notify = 3;
+    // filter out put events.
+    bool no_put = 4;
+    // filter out delete event.
+    bool no_delete = 5;
+}
+
+message KVWatchResponse {
+    // Indicates that the watch request tried watching from a
+    // compacted revision. The client should treat the watcher
+    // as canceled and should not try to create any watcher with
+    // the same start again.
+    bool compacted = 1;
+    // cancel_reason indicates the reason for canceling the watcher.
+    string cancel_reason = 2;
+    // Watchers should keep track of the latest after cursor
+    // so that they can resume where they left off with a
+    // subsequent watch request. If the last watch request
+    // was canceled due to compaction this cursor is not valid
+    // Use of an after cursor from a compacted revision will
+    // result in another canceled watch request.
+    int64 after = 3;
+    // Events contains a list of events ordered by
+    // by [revision,key]. There may be events from several different
+    // revisions in the events list, but events from older revisions
+    // will appear first.
+    repeated Event events = 4 [(gogoproto.nullable) = false];
+}
+
+message Event {
+    enum EventType {
+      PUT = 0;
+      DELETE = 1;
+    }
+    // type is the kind of event. If type is a PUT, it indicates
+    // new data has been stored to the key. If type is a DELETE,
+    // it indicates the key was deleted.
+    EventType type = 1;
+    // kv holds the KeyValue for the event.
+    // A PUT event contains current kv pair.
+    // A PUT event with kv.Version=1 indicates the creation of a key.
+    // A DELETE event contains the deleted key with
+    // its modification revision set to the revision of deletion.
+    KeyValue kv = 2 [(gogoproto.nullable) = false];
+}
+
 message KVQueryRequest {
     enum SortOrder {
         NONE = 0;  // default, no sorting
@@ -205,19 +289,24 @@ message KVQueryRequest {
 
     bytes partition = 2;
 
+    repeated int64 shard_ids = 3;
+
+    // Only keys matching the predicates in the selection will be included in the result
+    repeated KVPredicate selection = 4 [(gogoproto.nullable) = false];
+
     // Use after to get the next page of results by inserting the after cursor from the
     // previous page.
-    string after = 3;
+    string after = 5;
     // limit is the limit on the number of keys returned in the result.
     // If limit is set to 0 the default limit is used.
-    int64 limit = 4;
+    int64 limit = 6;
     // sort_order is the order for returned sorted results.
-    SortOrder sort_order = 5;
+    SortOrder sort_order = 7;
     // exclude_values when set excludes values from the resulting kvs
-    bool exclude_values = 6;
+    bool exclude_values = 8;
     // include_count when set includes the total count of keys matching
     // the query constraints in the result
-    bool include_count = 7;
+    bool include_count = 9;
 }
 
 message KVQueryResponse {

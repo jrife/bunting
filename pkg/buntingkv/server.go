@@ -1,10 +1,13 @@
-package server
+package buntingkv
 
 import (
 	"context"
 
 	"bunting.io/bunting/api/buntingkvpb"
 )
+
+type ServerConfig struct {
+}
 
 type Collection interface {
 	Query(*buntingkvpb.KVQueryRequest)
