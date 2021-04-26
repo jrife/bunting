@@ -11,9 +11,37 @@ option (gogoproto.goproto_getters_all) = false;
 
 message Collection {
     string name = 1;
+    string shard_group = 2;
 }
 
-message CollectionObserver {
+message Shard {
+    int32 id = 1;
+    string shard_group = 2;
+    KeyRange key_range = 3;
+}
+
+message ShardGroup {
+    string name = 1;
+    string table_topic = 2;
+    string command_topic = 3;
+}
+
+message ShardSplit {
+    int32 shard = 1;
+    string shard_group = 2;
+    string key = 3;
+}
+
+message ShardPipe {
+    string name = 1;
+    string shard_group = 2;
+    int32 source_shard = 3;
+    int32 dest_shard = 4;
+}
+
+message Host {
+    string name = 1;
+    bool is_shard_host = 2;
 }
 
 message Key {

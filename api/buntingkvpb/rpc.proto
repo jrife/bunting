@@ -9,32 +9,67 @@ option (gogoproto.sizer_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 option (gogoproto.goproto_getters_all) = false;
 
-service BuntingKV {
-    rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse);
-    rpc UpdateCollection(UpdateCollectionRequest) returns (UpdateCollectionResponse);
-    rpc DeleteCollection(DeleteCollectionRequest) returns (DeleteCollectionResponse);
-    rpc GetCollection(GetCollectionRequest) returns (GetCollectionResponse);
-    rpc ListCollections(ListCollectionsRequest) returns (ListCollectionsResponse);
-
-    rpc CreateCollectionObserver(CreateCollectionObserverRequest) returns (CreateCollectionObserverResponse);
-    rpc UpdateCollectionObserver(UpdateCollectionObserverRequest) returns (UpdateCollectionObserverResponse);
-    rpc DeleteCollectionObserver(DeleteCollectionObserverRequest) returns (DeleteCollectionObserverResponse);
-    rpc GetCollectionObserver(GetCollectionObserverRequest) returns (GetCollectionObserverResponse);
-    rpc ListCollectionObservers(ListCollectionObserversRequest) returns (ListCollectionObserversResponse);
-
-    rpc CreateHost(CreateHostRequest) returns (CreateHostResponse);
-    rpc UpdateHost(UpdateHostRequest) returns (UpdateHostResponse);
-    rpc DeleteHost(DeleteHostRequest) returns (DeleteHostResponse);
-    rpc GetHost(GetHostRequest) returns (GetHostResponse);
-    rpc ListHosts(ListHostsRequest) returns (ListHostsResponse);
-
-    rpc KVTxn(KVTxnRequest) returns (KVTxnResponse);
-    rpc KVWatch(KVWatchRequest) returns (stream KVWatchResponse);
-    rpc KVQuery(KVQueryRequest) returns (KVQueryResponse);
+// Low level KV queries
+service ShardGroup {
+    rpc Batch(ShardGroupBatchRequest) returns (ShardGroupBatchResponse);
+    rpc Query(ShardGroupQueryRequest) returns (ShardGroupQueryResponse);
+    rpc Watch(ShardGroupWatchRequest) returns (stream ShardGroupWatchResponse);
 }
 
-service ShardHost {
-    rpc KVQuery(KVQueryRequest) returns (KVQueryResponse);
+// System metadata
+service System {
+    rpc Batch(SystemBatchRequest) returns (SystemBatchResponse);
+    rpc Query(SystemQueryRequest) returns (SystemGetResponse);
+    rpc Watch(SystemWatchRequest) returns (stream SystemWatchResponse);
+}
+
+message BatchRequest {
+    repeated UpdateCondition conditions = 1;
+    repeated UpdateRequest requests = 2;
+}
+
+message BatchResponse {
+    repeated UpdateResponse responses = 1;
+}
+
+message UpdateCondition {
+    oneof condition {
+        DocumentVersionMatches document_version_matches = 1;
+    }
+}
+
+message UpdateRequest {
+    oneof request {
+        CreateCollectionRequest create_collection = 1;
+        UpdateCollectionRequest update_collection = 2;
+        DeleteCollectionRequest delete_collection = 3;
+        CreateShardRequest create_shard = 4;
+        UpdateShardRequest update_shard = 5;
+        DeleteShardRequest delete_shard = 6;
+        CreateShardGroupRequest create_shard_group = 7;
+        UpdateShardGroupRequest update_shard_group = 8;
+        DeleteShardGroupRequest delete_shard_group = 9;
+        CreateShardSplitRequest create_shard_split = 10;
+        UpdateShardSplitRequest update_shard_split = 11;
+        DeleteShardSplitRequest delete_shard_split = 12;
+    }
+}
+
+message UpdateResponse {
+    oneof response {
+        CreateCollectionResponse create_collection = 1;
+        UpdateCollectionResponse update_collection = 2;
+        DeleteCollectionResponse delete_collection = 3;
+        CreateShardResponse create_shard = 4;
+        UpdateShardResponse update_shard = 5;
+        DeleteShardResponse delete_shard = 6;
+        CreateShardGroupResponse create_shard_group = 7;
+        UpdateShardGroupResponse update_shard_group = 8;
+        DeleteShardGroupResponse delete_shard_group = 9;
+        CreateShardSplitResponse create_shard_split = 10;
+        UpdateShardSplitResponse update_shard_split = 11;
+        DeleteShardSplitResponse delete_shard_split = 12;
+    }
 }
 
 message CreateCollectionRequest {
